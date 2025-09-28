@@ -12,7 +12,19 @@ import 'apiintegration/newsrepositorycategory.dart';
 import 'apiintegration/newsrepositoryheadlines.dart';
 
 void main() {
-  runApp(MaterialApp(debugShowCheckedModeBanner: false, home: SplashScreen()));
+  final primaryColor = Colors.white;
+  runApp(
+    MaterialApp(
+      theme: ThemeData(
+        primaryColor: primaryColor,
+        scaffoldBackgroundColor: primaryColor,
+        colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
+      ),
+
+      debugShowCheckedModeBanner: false,
+      home: SplashScreen(),
+    ),
+  );
 }
 
 class MainScreen extends StatefulWidget {
@@ -142,7 +154,8 @@ class _MainScreenState extends State<MainScreen> {
                                 source: snapshot
                                     .data!
                                     .articles![index]
-                                    .source!.name
+                                    .source!
+                                    .name
                                     .toString(),
                                 description: snapshot
                                     .data!
