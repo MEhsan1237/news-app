@@ -44,6 +44,8 @@ class _DetailScreenState extends State<DetailScreen> {
         children: [
           SizedBox(
             height: height * .55,
+            width: MediaQuery.of(context).size.width,
+
             child: ClipRRect(
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(30),

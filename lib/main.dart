@@ -20,7 +20,6 @@ void main() {
         scaffoldBackgroundColor: primaryColor,
         colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
       ),
-
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
     ),
@@ -38,12 +37,11 @@ enum FilterList { bbcNews, aryNews, alJazeeraNews }
 
 class _MainScreenState extends State<MainScreen> {
   final NewsHeadLineRepository newsHeadLineRepository =
-      NewsHeadLineRepository();
+  NewsHeadLineRepository();
   final format = DateFormat('MMMM dd, yyyy');
   String categoryName = 'general';
-  late NewsCategoryRepository newsCategoryRepository = NewsCategoryRepository(
-    categoryName,
-  );
+  late NewsCategoryRepository newsCategoryRepository =
+  NewsCategoryRepository(categoryName);
   FilterList? selectedMenu;
   String name = "bbc-news"; // ✅ default channel
 
@@ -95,7 +93,8 @@ class _MainScreenState extends State<MainScreen> {
                 selectedMenu = item;
               });
             },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<FilterList>>[
+            itemBuilder: (BuildContext context) =>
+            <PopupMenuEntry<FilterList>>[
               PopupMenuItem<FilterList>(
                 value: FilterList.bbcNews,
                 child: Text("bbc-news"),
@@ -116,10 +115,9 @@ class _MainScreenState extends State<MainScreen> {
         children: [
           SizedBox(
             height: height * .55,
-            width: width,
+            width: width * .9,
             child: FutureBuilder<NewNewsHeadLinesApiModel>(
               future: newsHeadLineRepository.headLinesApiFunction(name),
-
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: spinKit);
@@ -140,110 +138,96 @@ class _MainScreenState extends State<MainScreen> {
                         article.publishedAt ?? "",
                       );
 
-                      return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailScreen(
-                                newImage: snapshot
-                                    .data!
-                                    .articles![index]
-                                    .urlToImage
-                                    .toString(),
-                                source: snapshot
-                                    .data!
-                                    .articles![index]
-                                    .source!
-                                    .name
-                                    .toString(),
-                                description: snapshot
-                                    .data!
-                                    .articles![index]
-                                    .description
-                                    .toString(),
-
-                                newsTitle: snapshot.data!.articles![index].title
-                                    .toString(),
-                                newsDate: snapshot
-                                    .data!
-                                    .articles![index]
-                                    .publishedAt
-                                    .toString(),
-                                content: snapshot.data!.articles![index].content
-                                    .toString(),
-                              ),
-                            ),
-                          );
-                        },
-                        child: Stack(
-                          children: [
-                            Container(
-                              width: width * .9,
-                              height: height,
-                              padding: EdgeInsets.symmetric(
-                                horizontal: height * .022,
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                child: CachedNetworkImage(
-                                  fit: BoxFit.cover,
-                                  imageUrl: article.urlToImage ?? "",
-                                  placeholder: (context, url) =>
-                                      Container(child: spinKit),
-                                  errorWidget: (context, url, error) =>
-                                      Icon(Icons.error),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 20,
-                              left: 20,
-                              child: Card(
-                                elevation: 5,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Colors.white,
-                                  ),
-                                  padding: EdgeInsets.all(15),
-                                  alignment: Alignment.bottomCenter,
-                                  width: width * .76,
-                                  height: height * .22,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        article.title ?? "No Title",
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: GoogleFonts.actor(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: height * .014),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Stack(
+                            children: [
+                              // ✅ Sirf image clickable hai
+                              Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(12),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => DetailScreen(
+                                          newImage: article.urlToImage.toString(),
+                                          source: article.source!.name.toString(),
+                                          description:
+                                          article.description.toString(),
+                                          newsTitle: article.title.toString(),
+                                          newsDate:
+                                          article.publishedAt.toString(),
+                                          content: article.content.toString(),
                                         ),
                                       ),
-                                      Spacer(),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              article.source?.name ?? "Unknown",
-                                            ),
-                                          ),
-                                          if (dateTime != null)
-                                            Text(format.format(dateTime)),
-                                        ],
-                                      ),
-                                    ],
+                                    );
+                                  },
+                                  child: CachedNetworkImage(
+                                    fit: BoxFit.cover,
+                                    width: width * .9,
+                                    height: height * .55,
+                                    imageUrl: article.urlToImage ?? "",
+                                    placeholder: (context, url) =>
+                                        Container(child: spinKit),
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.error),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+
+                              // ✅ Card clickable nahi hoga
+                              Positioned(
+                                bottom: 20,
+                                left: 20,
+                                child: Card(
+                                  elevation: 5,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      color: Colors.white,
+                                    ),
+                                    padding: EdgeInsets.all(15),
+                                    alignment: Alignment.bottomCenter,
+                                    width: width * .76,
+                                    height: height * .22,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          article.title ?? "No Title",
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: GoogleFonts.actor(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: Text(article.source?.name ??
+                                                  "Unknown"),
+                                            ),
+                                            if (dateTime != null)
+                                              Text(format.format(dateTime)),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -259,4 +243,5 @@ class _MainScreenState extends State<MainScreen> {
   }
 }
 
-const spinKit = SpinKitFadingCircle(color: Colors.deepOrangeAccent, size: 40);
+const spinKit =
+SpinKitFadingCircle(color: Colors.deepOrangeAccent, size: 40);

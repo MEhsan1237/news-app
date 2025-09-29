@@ -56,13 +56,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     scrollDirection: Axis.horizontal,
                     itemCount: AllListNames.length,
                     itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          category = AllListNames[index];
-                          setState(() {});
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 12),
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(16),
+                          onTap: () {
+                            category = AllListNames[index];
+                            setState(() {});
+                          },
                           child: Container(
                             decoration: BoxDecoration(
                               color: category == AllListNames[index]
@@ -80,8 +81,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                               ),
                             ),
                           ),
-                        ),
 
+                        ),
                       );
                     },
                   ),
