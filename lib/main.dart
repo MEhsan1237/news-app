@@ -33,7 +33,7 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-enum FilterList { bbcNews, aryNews, alJazeeraNews }
+enum FilterList { bbcNews, aryNews, alJazeeraNews,cnn }
 
 class _MainScreenState extends State<MainScreen> {
   final NewsHeadLineRepository newsHeadLineRepository =
@@ -90,6 +90,10 @@ class _MainScreenState extends State<MainScreen> {
                 if (FilterList.alJazeeraNews.name == item.name) {
                   name = "al-jazeera-english";
                 }
+
+                if (FilterList.cnn.name == item.name) {
+                  name = "cnn";
+                }
                 selectedMenu = item;
               });
             },
@@ -106,6 +110,10 @@ class _MainScreenState extends State<MainScreen> {
               PopupMenuItem<FilterList>(
                 value: FilterList.alJazeeraNews,
                 child: Text("al-jazeera-news"),
+              ),
+              PopupMenuItem<FilterList>(
+                value: FilterList.cnn,
+                child: Text("cnn"),
               ),
             ],
           ),
